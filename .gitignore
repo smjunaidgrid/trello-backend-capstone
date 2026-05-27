@@ -1,0 +1,37 @@
+# Virtual Environment
+.venv/
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment Variables
+.env
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store
+
+# Alembic Cache
+alembic/__pycache__/
+
+# Pytest Cache
+.pytest_cache/
+
+# Coverage Reports
+htmlcov/
+.coverage
+
+# Logs
+*.log
+
+# Build Files
+build/
+dist/
+*.egg-info/
+
+# SQLite
+*.sqlite3
