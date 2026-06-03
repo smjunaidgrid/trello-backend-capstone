@@ -7,6 +7,7 @@ from app.db.database import get_db
 from app.repositories.user_repository import UserRepository
 
 
+
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/api/v1/auth/login"
 )
@@ -19,7 +20,7 @@ async def get_current_user(
 
     payload = decode_access_token(token)
 
-    if not payload:
+    if payload is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired token"
@@ -27,7 +28,7 @@ async def get_current_user(
 
     email = payload.get("sub")
 
-    if not email:
+    if email is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token payload"
@@ -38,7 +39,7 @@ async def get_current_user(
         email
     )
 
-    if not user:
+    if user is None:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found"

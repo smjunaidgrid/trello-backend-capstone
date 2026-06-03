@@ -31,19 +31,20 @@ async def register_user(
         db,
         user_data
     )
+from fastapi.security import OAuth2PasswordRequestForm
 @router.post(
     "/login",
     response_model=Token
 )
 async def login_user(
-    user_credentials: UserLogin,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_db)
 ):
 
     return await AuthService.login_user(
         db,
-        user_credentials.email,
-        user_credentials.password
+        form_data.username,
+        form_data.password
     )
 @router.get(
     "/me",
