@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.board import Board
-
+from sqlalchemy.orm import selectinload
 
 class BoardRepository:
 
@@ -42,10 +42,15 @@ class BoardRepository:
         board_id
     ):
 
-        query = select(Board).where(
-            Board.id == board_id
+        query = (
+            select(Board)
+            .options(
+                selectinload(Board.sections)
+            )
+            .where(Board.id == board_id)
         )
 
         result = await db.execute(query)
 
         return result.scalar_one_or_none()
+    

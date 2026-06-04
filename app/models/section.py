@@ -1,7 +1,7 @@
 import uuid
 
 from sqlalchemy import String, ForeignKey, DateTime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
 from app.db.database import Base
@@ -39,4 +39,13 @@ class Section(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+    board = relationship(
+    "Board",
+    back_populates="sections"
+    )
+    tickets = relationship(
+    "Ticket",
+    back_populates="section",
+    cascade="all, delete"
     )

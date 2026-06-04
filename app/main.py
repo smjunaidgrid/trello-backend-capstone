@@ -6,6 +6,9 @@ from app.api.v1.auth import router as auth_router
 from app.api.v1.boards import router as boards_router
 
 from app.api.v1.sections import router as sections_router
+from app.api.v1.tickets import router as tickets_router
+from app.api.v1.invitations import router as invitations_router
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -39,5 +42,20 @@ async def health_check():
 
 app.include_router(
     sections_router,
+    prefix="/api/v1"
+)
+
+app.include_router(
+    tickets_router,
+    prefix="/api/v1"
+)
+
+app.include_router(
+    invitations_router,
+    prefix="/api/v1"
+)
+
+app.include_router(
+    invitations_router,
     prefix="/api/v1"
 )

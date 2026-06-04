@@ -1,7 +1,11 @@
 import uuid
 
 from sqlalchemy import String, Boolean, DateTime
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    relationship
+)
 from sqlalchemy.sql import func
 
 from app.db.database import Base
@@ -51,4 +55,7 @@ class User(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now()
+    )
+    assigned_tickets = relationship(
+    "Ticket"
     )

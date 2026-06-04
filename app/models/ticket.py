@@ -1,14 +1,22 @@
 import uuid
 
-from sqlalchemy import String, ForeignKey, DateTime
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import (
+    String,
+    ForeignKey,
+    DateTime
+)
+from sqlalchemy.orm import (
+    Mapped,
+    mapped_column,
+    relationship
+)
 from sqlalchemy.sql import func
 
 from app.db.database import Base
 
 
-class Board(Base):
-    __tablename__ = "boards"
+class Ticket(Base):
+    __tablename__ = "tickets"
 
     id: Mapped[uuid.UUID] = mapped_column(
         primary_key=True,
@@ -25,9 +33,14 @@ class Board(Base):
         nullable=True
     )
 
-    owner_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("users.id"),
+    section_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("sections.id"),
         nullable=False
+    )
+
+    assignee_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id"),
+        nullable=True
     )
 
     created_at: Mapped[DateTime] = mapped_column(
@@ -40,8 +53,12 @@ class Board(Base):
         server_default=func.now(),
         onupdate=func.now()
     )
-    sections = relationship(
-    "Section",
-    back_populates="board",
-    cascade="all, delete"
+
+    section = relationship(
+        "Section",
+        back_populates="tickets"
+    )
+
+    assignee = relationship(
+        "User"
     )

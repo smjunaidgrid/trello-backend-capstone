@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 from pydantic import BaseModel
-
+from app.schemas.section import SectionResponse
 
 class BoardBase(BaseModel):
     title: str
@@ -22,3 +22,6 @@ class BoardResponse(BoardBase):
 
     class Config:
         from_attributes = True
+        
+class BoardDetailResponse(BoardResponse):
+    sections: list[SectionResponse] = []
