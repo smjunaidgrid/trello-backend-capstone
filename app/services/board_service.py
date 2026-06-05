@@ -49,10 +49,10 @@ class BoardService:
         owner_id
     ):
 
-        return await BoardRepository.get_boards_by_owner(
-            db,
-            owner_id
-        )
+        return await BoardRepository.get_user_boards(
+        db,
+        owner_id
+    )
 
     @staticmethod
     async def get_board_details(

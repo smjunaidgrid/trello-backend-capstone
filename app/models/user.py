@@ -56,6 +56,13 @@ class User(Base):
         server_default=func.now(),
         onupdate=func.now()
     )
+
     assigned_tickets = relationship(
-    "Ticket"
+        "Ticket",
+        foreign_keys="Ticket.assignee_id"
+    )
+
+    created_tickets = relationship(
+        "Ticket",
+        foreign_keys="Ticket.creator_id"
     )

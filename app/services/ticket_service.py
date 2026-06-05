@@ -4,6 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.repositories.board_repository import BoardRepository
 from app.repositories.section_repository import SectionRepository
 from app.repositories.ticket_repository import TicketRepository
+from app.repositories.board_member_repository import BoardMemberRepository
+
 from app.schemas.ticket import (
     TicketCreate,
     TicketUpdate
@@ -18,7 +20,6 @@ class TicketService:
         ticket_data: TicketCreate,
         current_user
     ):
-
         section = await SectionRepository.get_section_by_id(
             db,
             ticket_data.section_id
@@ -35,7 +36,14 @@ class TicketService:
             section.board_id
         )
 
-        if board.owner_id != current_user.id:
+        member = await BoardMemberRepository.get_member(
+            db,
+            board.id,
+            current_user.id
+        )
+
+
+        if member is None:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Not authorized"
@@ -45,7 +53,8 @@ class TicketService:
             "title": ticket_data.title,
             "description": ticket_data.description,
             "section_id": ticket_data.section_id,
-            "assignee_id": ticket_data.assignee_id
+            "assignee_id": ticket_data.assignee_id,
+            "creator_id": current_user.id
         }
 
         return await TicketRepository.create_ticket(
@@ -76,7 +85,13 @@ class TicketService:
             section.board_id
         )
 
-        if board.owner_id != current_user.id:
+        member = await BoardMemberRepository.get_member(
+            db,
+            board.id,
+            current_user.id
+        )
+
+        if member is None:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Not authorized"
@@ -116,11 +131,14 @@ class TicketService:
             current_section.board_id
         )
 
-        if current_board.owner_id != current_user.id:
+        if (
+        current_board.owner_id != current_user.id
+        and ticket.creator_id != current_user.id
+        ):
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Not authorized"
-            )
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Not authorized"
+        )
 
         update_data = ticket_data.model_dump(
             exclude_unset=True

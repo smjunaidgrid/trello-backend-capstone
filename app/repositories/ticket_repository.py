@@ -81,14 +81,11 @@ class TicketRepository:
     @staticmethod
     async def get_user_tickets(
         db: AsyncSession,
-        owner_id
+        user_id
     ):
 
-        query = (
-            select(Ticket)
-            .join(Section)
-            .join(Board)
-            .where(Board.owner_id == owner_id)
+        query = select(Ticket).where(
+            Ticket.creator_id == user_id
         )
 
         result = await db.execute(query)
