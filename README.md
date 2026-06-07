@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a Trello-style backend application built using FastAPI, PostgreSQL, SQLAlchemy, and Alembic.
+This project is a Trello-style backend application built using FastAPI, PostgreSQL, SQLAlchemy and Alembic.
 
 The application supports:
 
@@ -172,8 +172,8 @@ POST /api/v1/auth/register
 {
 "email": "[user@test.com](mailto:user@test.com)",
 "password": "password123",
-"first_name": "John",
-"last_name": "Doe"
+"first_name": "Rahul",
+"last_name": "Raj"
 }
 
 ---
