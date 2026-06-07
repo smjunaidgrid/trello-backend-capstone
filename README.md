@@ -243,6 +243,41 @@ POST /api/v1/invitations/boards/<board_id>
 POST /api/v1/invitations/accept/<token>
 
 
+## Running Tests
+
+### Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Run All Tests
+
+```bash
+pytest
+```
+
+### Run Unit Tests Only
+
+```bash
+pytest tests/unit -v
+```
+
+### Run Integration Tests Only
+
+```bash
+pytest tests/integration -v
+```
+
+### Run Coverage Report
+
+```bash
+pytest --cov=app --cov-report=term-missing
+```
+
+Current test coverage exceeds the minimum project requirement of 50%.
+
+
 ~ Mohammed Junaid Shaik
 ~ Intern - Python Full Stack
 ~ Grid Dynamics
