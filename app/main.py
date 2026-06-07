@@ -20,12 +20,10 @@ app.include_router(
     auth_router,
     prefix="/api/v1"
 )
-
 app.include_router(
     boards_router,
     prefix="/api/v1"
 )
-
 
 @app.get("/")
 async def root():
@@ -55,7 +53,3 @@ app.include_router(
     prefix="/api/v1"
 )
 
-app.include_router(
-    invitations_router,
-    prefix="/api/v1"
-)
