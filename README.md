@@ -1,332 +1,206 @@
 # Trello Backend Capstone
 
-## Overview
+A production-oriented **Trello-style REST API** built with **FastAPI**, **PostgreSQL**, **SQLAlchemy**, **Alembic**, **Docker**, and **JWT Authentication**. The application enables teams to manage boards, sections, tickets, invitations, and board memberships through secure REST APIs following a layered architecture.
 
-This project is a Trello-style backend application built using FastAPI, PostgreSQL, SQLAlchemy and Alembic.
-This project is a Trello-style backend application developed using FastAPI, PostgreSQL, SQLAlchemy, Alembic, Docker, and JWT Authentication.
+This project was developed as part of the **Grid Dynamics Python Full Stack Internship – Module 10 Capstone Project**.
 
-The application enables users to create and manage boards, sections, tickets, invitations, and board memberships while enforcing role-based access control.
+---
 
-### Key Features
+# Features
+
+## User Authentication
 
 * User Registration
-* User Authentication (JWT)
-* Board Management
-* Section Management
-* Ticket Management
-* Board Invitations
-* Board Membership
-* Role-Based Access Control (RBAC)
-* Unit & Integration Testing
-* Dockerized Deployment
+* Secure Login using JWT Authentication
+* Password Hashing
+* Protected API Endpoints
 
----
-
-## Tech Stack
-
-* Python 3.12
-* FastAPI
-* PostgreSQL
-* SQLAlchemy
-* Alembic
-* JWT Authentication
-* Uvicorn
-* Docker
-* Docker Compose
-* Nginx
-
----
-
-## Project Structure
-
-```text
-app/
-├── api/
-├── models/
-├── repositories/
-├── schemas/
-├── services/
-├── db/
-└── main.py
-
-alembic/
-└── versions/
-
-tests/
-├── unit/
-└── integration/
-```
-
----
-
-## Setup Instructions
-
-### 1. Clone Repository
-
-```bash
-git clone <repository-url>
-cd trello-backend-capstone
-```
-
-### 2. Create Virtual Environment
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-### 3. Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Configure Environment Variables
-
-Create a `.env` file:
-
-```env
-PROJECT_NAME="Trello Backend Capstone"
-
-POSTGRES_SERVER=localhost
-POSTGRES_PORT=5432
-POSTGRES_USER=your_username
-POSTGRES_PASSWORD=your_password
-POSTGRES_DB=trello_capstone_db
-
-DATABASE_URL=postgresql+asyncpg://your_username:your_password@localhost:5432/trello_capstone_db
-
-JWT_SECRET_KEY=your_secret_key
-JWT_ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=60
-```
-
-### 5. Run Database Migrations
-
-```bash
-alembic upgrade head
-```
-
-### 6. Start Application
-
-```bash
-uvicorn app.main:app --reload
-```
-
-### 7. Open Swagger UI
-
-```text
-http://localhost:8000/docs
-```
-
----
-
-## Features
-
-### Authentication
-
-* Register User
-* Login User
-* JWT Protected Endpoints
-
-### Boards
+## Board Management
 
 * Create Board
+* Update Board
+* Delete Board
 * List User Boards
 * Board Details
-* Board Membership
 
-### Sections
+## Section Management
 
 * Create Section
 * Update Section
 * Delete Section
-* List Sections
+* List Sections within a Board
 
-### Tickets
+## Ticket Management
 
 * Create Ticket
 * Update Ticket
 * Delete Ticket
-* List Tickets
-* Ticket Assignment
+* Move Ticket Between Sections
+* Assign Ticket to Users
 
-### Collaboration
+## Collaboration
 
-* Generate Invitation Token
-* Accept Invitation
-* Manage Board Members
+* Board Invitations
+* Invitation Acceptance
+* Board Membership Management
 
-### Role-Based Access Control (RBAC)
+## Authorization
 
-#### Board Owner
+Role-Based Access Control (RBAC)
 
-* Manage Board
-* Manage Sections
+### Board Owner
+
+* Full Board Management
 * Manage Members
+* Manage Sections
 * Manage All Tickets
 
-#### Board Member
+### Board Member
 
 * Access Joined Boards
 * Create Own Tickets
-* Edit Own Tickets
+* Update Own Tickets
 * Delete Own Tickets
 
 ---
 
-## Database Migrations
+# Technology Stack
 
-### Create Migration
+## Backend
+
+* Python 3.12
+* FastAPI
+* SQLAlchemy (Async ORM)
+* Alembic
+* Pydantic
+* Uvicorn
+
+## Database
+
+* PostgreSQL
+
+## Authentication
+
+* JWT Authentication
+* Passlib Password Hashing
+
+## Testing
+
+* Pytest
+* HTTPX
+* Async Testing
+
+## Containerization
+
+* Docker
+* Docker Compose
+* Nginx Reverse Proxy
+
+## Cloud Deployment
+
+* Amazon EC2
+* Amazon RDS PostgreSQL
+* Amazon VPC
+* AWS Security Groups
+
+---
+
+# System Architecture
+
+```text
+                Client / Swagger UI
+                        │
+                        ▼
+             FastAPI (Uvicorn Server)
+                        │
+                Service Layer
+                        │
+              Repository Layer
+                        │
+         SQLAlchemy Async ORM
+                        │
+                PostgreSQL Database
+```
+
+---
+
+# AWS Deployment Architecture
+
+```text
+                Client
+                   │
+                   ▼
+         Amazon EC2 Instance
+      FastAPI + Uvicorn Server
+                   │
+         Security Group (5432)
+                   │
+                   ▼
+      Amazon RDS PostgreSQL
+```
+
+---
+
+# Project Structure
+
+```text
+trello-backend-capstone/
+│
+├── alembic/
+│   └── versions/
+│
+├── app/
+│   ├── api/
+│   ├── core/
+│   ├── db/
+│   ├── models/
+│   ├── repositories/
+│   ├── schemas/
+│   ├── services/
+│   ├── utils/
+│   └── main.py
+│
+├── tests/
+│   ├── integration/
+│   └── unit/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── alembic.ini
+├── README.md
+└── .gitignore
+```
+
+---
+
+# Local Installation
+
+## Clone Repository
 
 ```bash
-alembic revision --autogenerate -m "migration_message"
+git clone https://github.com/smjunaidgrid/trello-backend-capstone.git
+
+cd trello-backend-capstone
 ```
 
-### Apply Migrations
+---
+
+## Create Virtual Environment
 
 ```bash
-alembic upgrade head
+python -m venv .venv
+
+source .venv/bin/activate
+```
+
+Windows
+
+```bash
+.venv\Scripts\activate
 ```
 
 ---
-
-## API Documentation
-
-### Swagger UI
-
-```text
-http://localhost:8000/docs
-```
-
-### ReDoc
-
-```text
-http://localhost:8000/redoc
-```
-
----
-
-# API Usage Examples
-
-## Register User
-
-### Endpoint
-
-```http
-POST /api/v1/auth/register
-```
-
-### Request Body
-
-```json
-{
-"email": "[user@test.com](mailto:user@test.com)",
-"password": "password123",
-"first_name": "John",
-"last_name": "Doe"
-}
-```
-
----
-
-## Login User
-
-### Endpoint
-
-```http
-POST /api/v1/auth/login
-```
-
-### Content Type
-
-```text
-application/x-www-form-urlencoded
-```
-
-### Form Data
-
-```text
-username=user@test.com
-password=password123
-```
-
-### Response
-
-```json
-{
-  "access_token": "jwt_token",
-  "token_type": "bearer"
-}
-```
-
----
-
-## Create Board
-
-```http
-POST /api/v1/boards/
-```
-
-```json
-{
-  "title": "Project Board",
-  "description": "Capstone Board"
-}
-```
-
----
-
-## Create Section
-
-```http
-POST /api/v1/sections/
-```
-
-```json
-{
-  "name": "To Do",
-  "description": "Tasks to start",
-  "board_id": "<board_id>"
-}
-```
-
----
-
-## Create Ticket
-
-```http
-POST /api/v1/tickets/
-```
-
-```json
-{
-  "title": "Implement Login",
-  "description": "JWT Authentication",
-  "section_id": "<section_id>",
-  "assignee_id": null
-}
-```
-
----
-
-## Generate Invitation
-
-```http
-POST /api/v1/invitations/boards/<board_id>
-```
-
----
-
-## Accept Invitation
-
-```http
-POST /api/v1/invitations/accept/<token>
-```
-
----
-
-# Testing
 
 ## Install Dependencies
 
@@ -334,130 +208,276 @@ POST /api/v1/invitations/accept/<token>
 pip install -r requirements.txt
 ```
 
-## Run All Tests
+---
 
-```bash
-pytest
+# Environment Variables
+
+Create a `.env` file.
+
+```env
+PROJECT_NAME="Trello Backend Capstone"
+
+POSTGRES_SERVER=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=password
+POSTGRES_DB=trello
+
+DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/trello
+
+JWT_SECRET_KEY=your_secret_key
+JWT_ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
 ```
-
-## Run Unit Tests
-
-```bash
-pytest tests/unit -v
-```
-
-## Run Integration Tests
-
-```bash
-pytest tests/integration -v
-```
-
-## Generate Coverage Report
-
-```bash
-pytest --cov=app --cov-report=term-missing
-```
-
-### Test Coverage
-
-Current project coverage: **68%**
-
-The project satisfies the capstone requirement of:
-
-* At least 50% unit test coverage
-* At least 50% endpoint/integration test coverage
 
 ---
 
-# Docker Setup
+# Database Migration
 
-## Docker Architecture
+Run Alembic migrations
 
-```text
-Client
-   │
-   ▼
-Nginx
-   │
-   ▼
-FastAPI (Uvicorn)
-   │
-   ▼
-PostgreSQL
+```bash
+alembic upgrade head
 ```
 
-## Containers
+Create new migration
 
-The application runs using three containers:
+```bash
+alembic revision --autogenerate -m "migration_name"
+```
 
-* FastAPI Backend (Uvicorn)
-* PostgreSQL Database
-* Nginx Reverse Proxy
+---
 
-## Build and Start Containers
+# Running the Application
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Application
+
+```
+http://localhost:8000
+```
+
+Swagger
+
+```
+http://localhost:8000/docs
+```
+
+ReDoc
+
+```
+http://localhost:8000/redoc
+```
+
+---
+
+# Docker Deployment
+
+Build containers
 
 ```bash
 docker compose up -d --build
 ```
 
-## View Running Containers
+View containers
 
 ```bash
 docker ps
 ```
 
-## View Logs
+View logs
 
 ```bash
 docker compose logs
 ```
 
-## Stop Containers
+Stop containers
 
 ```bash
 docker compose down
 ```
 
-## Rebuild Containers
+---
+
+# AWS Cloud Deployment
+
+The backend application was successfully deployed to Amazon Web Services (AWS).
+
+## Infrastructure
+
+* Amazon EC2 (Application Server)
+* Amazon RDS PostgreSQL
+* Amazon VPC
+* AWS Security Groups
+
+Deployment validation included:
+
+* EC2 instance provisioning
+* PostgreSQL connectivity verification
+* Alembic migration execution
+* FastAPI deployment using Uvicorn
+* Successful API execution against Amazon RDS
+
+---
+
+# API Overview
+
+## Authentication
+
+| Method | Endpoint                |
+| ------ | ----------------------- |
+| POST   | `/api/v1/auth/register` |
+| POST   | `/api/v1/auth/login`    |
+
+---
+
+## Boards
+
+| Method | Endpoint              |
+| ------ | --------------------- |
+| POST   | `/api/v1/boards`      |
+| GET    | `/api/v1/boards`      |
+| GET    | `/api/v1/boards/{id}` |
+| PUT    | `/api/v1/boards/{id}` |
+| DELETE | `/api/v1/boards/{id}` |
+
+---
+
+## Sections
+
+| Method | Endpoint                |
+| ------ | ----------------------- |
+| POST   | `/api/v1/sections`      |
+| GET    | `/api/v1/sections`      |
+| PUT    | `/api/v1/sections/{id}` |
+| DELETE | `/api/v1/sections/{id}` |
+
+---
+
+## Tickets
+
+| Method | Endpoint               |
+| ------ | ---------------------- |
+| POST   | `/api/v1/tickets`      |
+| GET    | `/api/v1/tickets`      |
+| PUT    | `/api/v1/tickets/{id}` |
+| DELETE | `/api/v1/tickets/{id}` |
+
+---
+
+## Invitations
+
+| Method | Endpoint                                |
+| ------ | --------------------------------------- |
+| POST   | `/api/v1/invitations/boards/{board_id}` |
+| POST   | `/api/v1/invitations/accept/{token}`    |
+
+---
+
+# Testing
+
+Install dependencies
 
 ```bash
-docker compose up -d --build
+pip install -r requirements.txt
+```
+
+Run all tests
+
+```bash
+pytest
+```
+
+Run unit tests
+
+```bash
+pytest tests/unit -v
+```
+
+Run integration tests
+
+```bash
+pytest tests/integration -v
+```
+
+Generate coverage report
+
+```bash
+pytest --cov=app --cov-report=term-missing
 ```
 
 ---
 
-## Capstone Requirements Implemented
+# Capstone Requirements
 
-### Part 1
+## Part 1
 
 * User Registration
 * User Authentication
 * Board Management
 * Section CRUD
 * Ticket CRUD
-* Invitations
+* Invitation Management
 * Board Membership
-* RBAC
+* Role-Based Access Control
 
-### Part 2
+## Part 2
 
-* Unit Testing
-* Integration Testing
-* Coverage Reporting
+* Unit Tests
+* Integration Tests
+* Test Coverage
 
-### Part 3
+## Part 3
 
 * Dockerfile
 * Docker Compose
-* PostgreSQL Container
 * FastAPI Container
-* Nginx Container
+* PostgreSQL Container
+* Nginx Reverse Proxy
+
+## Part 4
+
+* AWS Cloud Deployment
+* Amazon EC2
+* Amazon RDS PostgreSQL
+* Secure Networking using Security Groups
+* Database Migration using Alembic
+* Cloud Database Connectivity Validation
+
+## Part 5 (Proposed Enhancement)
+
+Future CI/CD implementation using GitHub Actions:
+
+* Pull Request Validation
+* Automated Unit Testing
+* Docker Image Build
+* Container Registry Push
+* Automated Cloud Deployment
 
 ---
 
-## Author
+# Future Enhancements
 
-Mohammed Junaid Shaik
+* React Frontend
+* Kanban Drag-and-Drop Interface
+* Redis Caching
+* Email Notifications
+* Background Workers
+* WebSockets
+* Application Load Balancer
+* Auto Scaling Group
+* Multi-Region Deployment
+* Infrastructure as Code (Terraform)
+* GitHub Actions CI/CD Pipeline
+
+---
+
+# Author
+
+**Mohammed Junaid Shaik**
 
 Python Full Stack Intern
 
