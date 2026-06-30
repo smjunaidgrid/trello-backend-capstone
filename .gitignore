@@ -35,3 +35,9 @@ dist/
 
 # SQLite
 *.sqlite3
+
+# Generated documentation
+*.pdf
+
+# Local requirements
+requirements-local.txt
